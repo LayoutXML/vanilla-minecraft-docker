@@ -1,0 +1,27 @@
+ARG JDK_VERSION=14-slim
+FROM openjdk:${JDK_VERSION}
+
+ARG JDK_VERSION=14-slim
+ENV JDK_VERSION "$JDK_VERSION"
+ARG FOLDER_NAME="minecraft_server"
+ENV FOLDER_NAME "$FOLDER_NAME"
+ARG MINECRAFT_VERSION=""
+ENV MINECRAFT_VERSION "$MINECRAFT_VERSION"
+ARG RAM="1024M"
+ENV RAM "$RAM"
+ARG JAVA_ARGS=""
+ENV JAVA_ARGS "$JAVA_ARGS"
+ARG EULA="false"
+ENV EULA "$EULA"
+
+RUN apt-get update
+RUN apt-get install -y wget
+RUN apt-get install -y jq
+
+COPY setup.sh ./
+RUN chmod +x ./setup.sh
+CMD ["./setup.sh"]
+
+VOLUME "$FOLDER_NAME"
+EXPOSE 25565/tcp
+EXPOSE 25565/udp
